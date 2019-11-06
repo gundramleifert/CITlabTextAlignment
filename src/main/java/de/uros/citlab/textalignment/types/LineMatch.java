@@ -14,6 +14,10 @@ public class LineMatch {
         this.confidence = confidence;
     }
 
+    public void setConfidence(double confidence) {
+        this.confidence = confidence;
+    }
+
     public ConfMat getCm() {
         return cm;
     }

@@ -7,7 +7,6 @@ import de.uros.citlab.textalignment.types.LineMatch;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.File;
 import java.util.*;
 
 public class TextAlignerTest {
@@ -31,6 +30,8 @@ public class TextAlignerTest {
                 0.0,
                 0.0
         );
+        textAligner.setCalcDist(false);
+        textAligner.setCostAnyChar(0.0);
 //        textAligner.setDebugOutput(1000, new File("out.png"));
         //either first or third component have to be null
         testCase(textAligner,
@@ -42,24 +43,28 @@ public class TextAlignerTest {
                 " ",
                 4.0,
                 0.2,
-                2.0,
+                5.0,
                 0.0
         );
+        textAligner.setCalcDist(false);
+        textAligner.setCostAnyChar(0.0);
         testCase(textAligner,
-                Arrays.asList("eins", "zwei", "eins", "drei")
-                , Arrays.asList("eins", "zwei", "eins", "drei"),
+                Arrays.asList("eins", "zwei", "eins", "drei"),
+                Arrays.asList("eins", "zwei", "eins", "drei"),
                 Arrays.asList("eins", "zwei", "eins", "drei"));
         textAligner = new TextAligner(
                 " ",
                 4.0,
-                0.2,
+                0.5,
                 null,
                 0.0
         );
-        textAligner.setDebugOutput(1000, new File("out.png"),false);
+        textAligner.setCalcDist(false);
+        textAligner.setCostAnyChar(0.0);
+//        textAligner.setDebugOutput(1000, new File("out.png"),false);
         testCase(textAligner,
-                Arrays.asList("eins", "zwei", "eins", "drei")
-                , Arrays.asList("eins", "zwei", "eins", "drei"),
+                Arrays.asList("eins", "zwei", "eins", "drei"),
+                Arrays.asList("eins", "zwei", "eins", "drei"),
                 Arrays.asList("eins", "zwei", "eins", "drei"));
 
     }
@@ -72,18 +77,19 @@ public class TextAlignerTest {
         TextAligner textAligner = new TextAligner(
                 " ",
                 4.0,
-                0.2,
+                0.5,
                 null,
                 0.0
         );
         textAligner.setFilterOffset(0.0);
-        textAligner.setDebugOutput(1000, new File("out.png"),false);
+        textAligner.setCostAnyChar(0.0);
+//        textAligner.setDebugOutput(1000, new File("out.png"),false);
         //bestpath is not right
         testCase(textAligner,
-                Arrays.asList("eins", "zwei", "eins", "drei")
-                , Arrays.asList("eins", "zwei", "eins", "drei"),
+                Arrays.asList("eins", "zwei", "eins", "drei"),
+                Arrays.asList("eins", "zwei", "eins", "drei"),
                 Arrays.asList(null, null, null, null));
-        textAligner.setFilterOffset(3.0);
+        textAligner.setFilterOffset(50.0);
         testCase(textAligner,
                 Arrays.asList("eins", "zwei", "eins", "drei"),
                 Arrays.asList("eins", "zwei", "eins", "drei"),
@@ -107,7 +113,7 @@ public class TextAlignerTest {
                 0.0
         );
         textAligner.setHp(new HyphenationProperty(6.0, null));
-        textAligner.setDebugOutput(1000, new File("out.png"),false);
+//        textAligner.setDebugOutput(1000, new File("out.png"),false);
         textAligner.setHp(null);
         textAligner.setUpdateScheme(PathCalculatorGraph.UpdateScheme.ALL);
         testCase(textAligner, Arrays.asList("line 1", "line 2"), Arrays.asList("line 1", "line 2"), Arrays.asList("line 1", "line 2"));
@@ -121,7 +127,7 @@ public class TextAlignerTest {
 
     @Test
     public void getLargeSzenario() {
-        offsetBP = 1.0;
+        offsetBP = 2.5;
         variance = 0.2;
         TextAligner textAligner = new TextAligner(
                 " ",
@@ -130,6 +136,9 @@ public class TextAlignerTest {
                 5.0,
                 0.0
         );
+        textAligner.setCostAnyChar(0.0);
+        textAligner.setCalcDist(false);
+        textAligner.setThreshold(0.001);
 //        textAligner.setHp(new HyphenationProperty(6.0, null));
 //        textAligner.setDebugOutput(1000, new File("out.png"));
         textAligner.setHp(null);

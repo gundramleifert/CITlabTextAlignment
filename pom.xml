@@ -8,7 +8,7 @@
 
     <groupId>de.uros.citlab</groupId>
     <artifactId>textalignment</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.1.0</version>
 
     <parent>
         <groupId>de.uros.citlab</groupId>
@@ -21,23 +21,39 @@
         <dependency>
             <groupId>de.uros.citlab</groupId>
             <artifactId>errorrate</artifactId>
+            <version>5.3.0</version>
         </dependency>
         <dependency>
             <groupId>de.uros.citlab</groupId>
             <artifactId>confmat</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+        </dependency>
 
         <!--LOGGING-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+<!--            <version>1.7.28</version>-->
+<!--            <scope>test</scope>-->
+        </dependency>
 
         <!--TESTING-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>1.3</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -7,21 +7,22 @@ public class ConfMatVector {
 
     public final double[] costVec;
     public final double[] vecOrig;
-    public double offset;
-    public double costAnyChar;
-    public double costNaC;
-    public double costReturn;
-    public double costOffset;
-    public boolean isReturn;
-    public int maxIndex;
+    public final double offset;
+    public final double costAnyChar;
+    public final double costNaC;
+    public final double costReturn;
+    //    public final double costOffset;
+    public final boolean isReturn;
+    //    public int maxIndex;
     public Pair<Integer, Integer> origPos;
 
     @Override
     public String toString() {
-        return String.format("ConfMatVec{" + "cAnyChar=%5.2f, cNaC=%5.2f, isRet=%5b, maxIdx=%2d}", costAnyChar, costNaC, isReturn, maxIndex);
+        return String.format("ConfMatVec{" + "cAnyChar=%5.2f, cNaC=%5.2f, isRet=%5b}", costAnyChar, costNaC, isReturn);
     }
 
-    public ConfMatVector(double[] vectorIn, CharMap cm, String lineBreakChars) {
+    public ConfMatVector(double[] vectorIn, CharMap cm, String lineBreakChars, double costAnyChar, boolean toDist) {
+        int maxIndex = 0;
         vecOrig = vectorIn;
         int idxNaC = cm.get(CharMap.NaC);
         int idxReturn = cm.get(CharMap.Return);
@@ -43,16 +44,16 @@ public class ConfMatVector {
                 maxChar = v;
             }
         }
-        this.offset = -/*Math.log(shift);//*/max;
-        this.costOffset = Math.log(shift) + offset;
+        this.offset = toDist ? -/*Math.log(shift);//*/max : 0;
+        shift = -Math.log(shift) + offset;
         this.costVec = new double[vectorIn.length];
         for (int i = 0; i < costVec.length; i++) {
-            costVec[i] = -vectorIn[i] - offset;
+            costVec[i] = -vectorIn[i] - shift;
         }
         costNaC = costVec[idxNaC];
         costReturn = costVec[idxReturn];
         isReturn = maxIndex == idxReturn;
-        costAnyChar = -maxChar - offset;
+        this.costAnyChar = -maxChar - shift + costAnyChar;
         if (costAnyChar < 0.0) {
             throw new RuntimeException("cost of arbitrary character is negative (" + costAnyChar + ") - this is not possible");
         }

@@ -23,19 +23,31 @@ public class BestPathPart {
     public int endReco;
     public int startRef;
     public int endRef;
-    public double costs;
+    public double cost;
     public double costStart;
     public double costEnd;
     public String reference;
     public static final Logger LOG = LoggerFactory.getLogger(BestPathPart.class);
 
-    public double getConf() {
-        return Math.exp(-getCost());
-    }
+//    public double getConf() {
+//        return Math.exp(-getCost());
+//    }
+//
+//    public double getCost() {
+//        return Math.max(Math.max(costs, costStart), costEnd);
+//    }
 
-    public double getCost() {
-        return Math.max(Math.max(costs, costStart), costEnd);
-    }
+//    public double getCostEnd() {
+//        return costEnd;
+//    }
+//
+//    public double getCost() {
+//        return costs;
+//    }
+//
+//    public double getCostStart() {
+//        return costStart;
+//    }
 
     private static String collapse(String str) {
         if (str == null || str.isEmpty()) {
@@ -58,8 +70,7 @@ public class BestPathPart {
         return sb.toString();
     }
 
-    public static BestPathPart newInstance(List<PathCalculatorGraph.IDistance<ConfMatVector, NormalizedCharacter>> elements) {
-        final int borderSize = 3;
+    public static BestPathPart newInstance(List<PathCalculatorGraph.IDistance<ConfMatVector, NormalizedCharacter>> elements, int borderSize) {
         double[][] confMatPart = new double[elements.size()][];
         StringBuilder sb = new StringBuilder();
         StringBuilder prefix = new StringBuilder();
@@ -77,6 +88,7 @@ public class BestPathPart {
             if (collapse(prefix.toString()).length() >= borderSize) {
                 break;
             }
+            //TODO: add until collaps end with NAC
         }
         for (; lenSuffix < elements.size(); lenSuffix++) {
             PathCalculatorGraph.IDistance<ConfMatVector, NormalizedCharacter> aElement = elements.get(elements.size() - 1 - lenSuffix);
@@ -102,7 +114,7 @@ public class BestPathPart {
                 throw new RuntimeException("expect only entries with length 1 but is " + recos.length);
             }
             confMatPart[i] = recos[0].vecOrig;
-            costIntegral[i] = recos[0].costOffset + element.getCosts();
+            costIntegral[i] = recos[0].offset + element.getCosts();
             if (i > 0) {
                 costIntegral[i] += costIntegral[i - 1];
             }
@@ -136,13 +148,13 @@ public class BestPathPart {
                 reference);
     }
 
-    private BestPathPart(double[][] orig, int startReco, int endReco, int startRef, int endRef, double costs, double costStart, double costEnd, String reference) {
+    private BestPathPart(double[][] orig, int startReco, int endReco, int startRef, int endRef, double cost, double costStart, double costEnd, String reference) {
         this.orig = orig;
         this.startReco = startReco;
         this.endReco = endReco;
         this.startRef = startRef;
         this.endRef = endRef;
-        this.costs = costs;
+        this.cost = cost;
         this.costStart = costStart;
         this.costEnd = costEnd;
         this.reference = reference;
@@ -150,7 +162,7 @@ public class BestPathPart {
 
     @Override
     public String toString() {
-        return "ConfMatPart{" + "start=" + startReco + ", end=" + endReco + ", costs=" + costs + ", reference=" + reference + '}';
+        return "ConfMatPart{" + "start=" + startReco + ", end=" + endReco + ", costs=" + cost + ", reference=" + reference + '}';
     }
 
 }
