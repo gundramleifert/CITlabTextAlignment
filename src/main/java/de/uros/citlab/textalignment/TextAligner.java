@@ -59,6 +59,11 @@ public class TextAligner {
         this.calcDist = calcDist;
     }
 
+    public void setFilter(PathCalculatorGraph.PathFilter<ConfMatVector, NormalizedCharacter> filter) {
+        LOG.warn("maxbe in confict with FilterOffset");
+        impl.setFilter(filter);
+    }
+
     public void setFilterOffset(double offset) {
         if (costJumpConfMat != null) {
             if (offset < 0.0) {
@@ -98,7 +103,13 @@ public class TextAligner {
             impl.setFilter(new FilterJumpConfMat());
         }
         if (costSkipWords != null) {
-            impl.addCostCalculator(new CostCalculatorSkipWord(costSkipWords));
+            impl.addCostCalculator(
+                    new CostCalculatorSkipWord(
+                            costSkipWords,
+                            hp != null && !hp.skipSuffix,
+                            hp != null && hp.skipPrefix
+                    )
+            );
         }
         impl.addCostCalculator(new CostCalculatorSkipConfMat(costSkipConfMat != null ? costSkipConfMat : Double.POSITIVE_INFINITY));
         if (hp != null) {
@@ -157,7 +168,7 @@ public class TextAligner {
         int indexReturn = charMap.get(returnSymbol);
         NormalizedCharacter ncNaC = new NormalizedCharacter(CharMap.NaC, new char[]{CharMap.NaC}, new int[]{indexNaC}, false, NormalizedCharacter.Type.Dft, false);
         NormalizedCharacter ncNaCIsHyphen = new NormalizedCharacter(CharMap.NaC, new char[]{CharMap.NaC}, new int[]{indexNaC}, true, NormalizedCharacter.Type.Dft, false);
-        NormalizedCharacter ncLineBreak = new NormalizedCharacter('\n', new char[]{'\n'}, new int[]{indexReturn}, false, NormalizedCharacter.Type.Return, false);
+        NormalizedCharacter ncLineBreak = new NormalizedCharacter('\n', new char[]{'\n'}, new int[]{indexReturn}, false, NormalizedCharacter.Type.ReturnLineBreak, false);
         NormalizedCharacter ncRet = hp != null ? new NormalizedCharacter(returnSymbol, new char[]{returnSymbol}, new int[]{indexReturn}, true, hp.hypCosts, false) : null;
         NormalizedCharacter prefix = hp != null ? new NormalizedCharacter(hp.prefixes != null && hp.prefixes.length > 0 ? hp.prefixes[0] : '¬', hp.prefixes, getIndexes(charMap, hp.prefixes), true, NormalizedCharacter.Type.Dft, hp.skipPrefix) : null;
         NormalizedCharacter suffix = hp != null ? new NormalizedCharacter(hp.suffixes != null && hp.suffixes.length > 0 ? hp.suffixes[0] : '¬', hp.suffixes, getIndexes(charMap, hp.suffixes), true, NormalizedCharacter.Type.Dft, hp.skipSuffix) : null;

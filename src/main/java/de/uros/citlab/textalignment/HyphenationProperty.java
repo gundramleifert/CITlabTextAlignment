@@ -9,8 +9,6 @@ import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-
 /**
  * @author gundram
  */
@@ -61,6 +59,10 @@ public class HyphenationProperty {
 
     public HyphenationProperty(boolean skipSuffix, boolean skipPrefix, char[] prefixes, char[] suffixes, double hypCosts) {
         this(skipSuffix, skipPrefix, prefixes, suffixes, hypCosts, null);
+    }
+
+    public HyphenationProperty(boolean skipSuffix, boolean skipPrefix, String prefixes, String suffixes, double hypCosts, Hyphenator.HyphenationPattern pattern) {
+        this(skipSuffix, skipPrefix, prefixes == null ? null : prefixes.toCharArray(), suffixes == null ? null : suffixes.toCharArray(), hypCosts, pattern);
     }
 
     public HyphenationProperty(boolean skipSuffix, boolean skipPrefix, char[] prefixes, char[] suffixes, double hypCosts, Hyphenator.HyphenationPattern pattern) {

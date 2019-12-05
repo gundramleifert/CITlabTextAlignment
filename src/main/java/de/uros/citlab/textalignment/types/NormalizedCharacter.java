@@ -19,15 +19,23 @@ public class NormalizedCharacter {
         return ("NormalizedCharacter{" + "orig=" + orig + ", hyp=" + isHyphen + ", skip=" + isSkipable + ", type=" + type + ", anyChar=" + isAnyChar + '}').replace(CharMap.NaC, '*').replace("\n", "\\n");
     }
 
+    public boolean isSkipPointSoft() {
+        return type != Type.Dft;
+    }
+
+    public boolean isSkipPointHard() {
+        return type != Type.Dft || type == Type.HyphenLineBreak;
+    }
+
     public enum Type {
         Dft,
         SpaceLineBreak,
-        Return,
-        HypenLineBreak
+        ReturnLineBreak,
+        HyphenLineBreak
     }
 
     public NormalizedCharacter(char orig, char[] normalized, int[] indexes, boolean isHyphen, double costsHypenLineBreak, boolean isSkipable) {
-        this(orig, normalized, indexes, isHyphen, Type.HypenLineBreak, costsHypenLineBreak, isSkipable);
+        this(orig, normalized, indexes, isHyphen, Type.HyphenLineBreak, costsHypenLineBreak, isSkipable);
     }
 
     private NormalizedCharacter(char orig, char[] normalized, int[] indexes, boolean isHyphen, Type type, double costsHypenLineBreak, boolean isSkipable) {
