@@ -25,7 +25,7 @@ public class TextAlignerTest {
         r.setSeed(1234);
         TextAligner textAligner = new TextAligner(
                 " ",
-                4.0,
+                8.0,
                 0.2,
                 0.0,
                 0.0
@@ -41,7 +41,7 @@ public class TextAlignerTest {
 
         textAligner = new TextAligner(
                 " ",
-                4.0,
+                8.0,
                 0.2,
                 5.0,
                 0.0
@@ -54,7 +54,7 @@ public class TextAlignerTest {
                 Arrays.asList("eins", "zwei", "eins", "drei"));
         textAligner = new TextAligner(
                 " ",
-                4.0,
+                8.0,
                 0.5,
                 null,
                 0.0
@@ -76,7 +76,7 @@ public class TextAlignerTest {
         r.setSeed(1234);
         TextAligner textAligner = new TextAligner(
                 " ",
-                4.0,
+                8.0,
                 0.5,
                 null,
                 0.0
@@ -107,7 +107,7 @@ public class TextAlignerTest {
     public void testToyExamples() {
         TextAligner textAligner = new TextAligner(
                 " ",
-                4.0,
+                8.0,
                 0.2,
                 1.0,
                 0.0
@@ -131,7 +131,7 @@ public class TextAlignerTest {
         variance = 0.2;
         TextAligner textAligner = new TextAligner(
                 " ",
-                4.0,
+                8.0,
                 0.2,
                 5.0,
                 0.0

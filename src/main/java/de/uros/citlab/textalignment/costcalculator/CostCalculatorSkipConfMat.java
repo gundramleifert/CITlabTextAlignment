@@ -25,7 +25,7 @@ public class CostCalculatorSkipConfMat extends CostCalculatorAbstract {
         super.init(dm, recos, refs);
         isSkipPoint = new boolean[refs.length];
         for (int j = 1; j < refs.length; j++) {
-            isSkipPoint[j] = isSkipPointSoft(refs[j]);
+            isSkipPoint[j] = refs[j].isSkipPointSoft();
         }
         returnPoints = new LinkedList<>();
         isReturnPoint = new boolean[recos.length];

@@ -18,13 +18,6 @@ abstract class CostCalculatorAbstract implements PathCalculatorGraph.ICostCalcul
     public CostCalculatorAbstract() {
     }
 
-    protected static boolean isSkipPointSoft(NormalizedCharacter nc) {
-        return nc.type != NormalizedCharacter.Type.Dft;
-    }
-
-    protected static boolean isSkipPointHard(NormalizedCharacter nc) {
-        return isSkipPointSoft(nc) && nc.type != NormalizedCharacter.Type.HypenLineBreak;
-    }
 
     protected Double getCost(NormalizedCharacter normedChar, ConfMatVector confMatVec) {
         if (normedChar.isAnyChar) {
@@ -42,13 +35,13 @@ abstract class CostCalculatorAbstract implements PathCalculatorGraph.ICostCalcul
             cost = Math.min(cost, confMatVec.costVec[key]);
         }
         switch (normedChar.type) {
-            case Return:
+            case ReturnLineBreak:
                 cost = confMatVec.costReturn;
                 break;
             case SpaceLineBreak:
                 cost = Math.min(cost, confMatVec.costReturn);
                 break;
-            case HypenLineBreak:
+            case HyphenLineBreak:
                 cost = Math.min(cost, confMatVec.costReturn) + normedChar.costsHyphenLineBreak;
                 break;
             default:

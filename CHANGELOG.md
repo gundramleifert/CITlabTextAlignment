@@ -1,5 +1,8 @@
 #CITlabTextAlignment
 
+# 1.1.2
+* set parent to 1.8
+
 # 1.1.1
 * modify dependencies to CITlabConfmat
 

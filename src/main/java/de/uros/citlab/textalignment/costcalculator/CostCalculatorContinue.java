@@ -29,21 +29,28 @@ public class CostCalculatorContinue extends CostCalculatorAbstract {
     @Override
     public PathCalculatorGraph.DistanceSmall getNeighbourSmall(int[] ints, PathCalculatorGraph.DistanceSmall distanceSmall) {
         final int refIdx = ints[1];
+        final int recoIdx = ints[0];
+        final int recoIdx2 = recoIdx + 1;
         final NormalizedCharacter normChar = refs[refIdx];
         if (normChar == null) {
             return null;
         }
-        final int recoIdx = ints[0] + 1;
-        if (recoIdx >= sizeReco) {
+        if (recoIdx < 1 || recos[recoIdx].isReturn) {
             return null;
         }
-        final ConfMatVector recoPart = recos[recoIdx];
+        if (recoIdx2 >= sizeReco) {
+            return null;
+        }
+        final ConfMatVector recoPart = recos[recoIdx2];
+        if (recoPart.isReturn) {
+            return null;
+        }
         //TODO: early break for characters \n?
         final Double cost = getCost(normChar, recoPart);
         if (cost == null) {
             return null;
         }
-        return new PathCalculatorGraph.DistanceSmall(ints, new int[]{recoIdx, refIdx}, distanceSmall.costsAcc + cost, this);
+        return new PathCalculatorGraph.DistanceSmall(ints, new int[]{recoIdx2, refIdx}, distanceSmall.costsAcc + cost, this);
     }
 
 }
